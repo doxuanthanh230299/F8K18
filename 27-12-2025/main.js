@@ -1,6 +1,6 @@
-// Phần 1
+// P1
 
-// Bài 1
+// 1
     const name = 'Do Thanh'
     const age = 26
     const isStudent = true
@@ -9,7 +9,7 @@
     console.log(`Age: ${age}`)
     console.log(`Is student: ${isStudent}`)
 
-// Bài 2
+// 2
     let a = 5
     let b = 10
     a = 23
@@ -17,21 +17,24 @@
     console.log(`Giá trị của a: ${a}`);
     console.log(`Giá trị của b: ${b}`);
 
-// Phần 2
-/* Const khác let ở điểm là :
-    Const là khai báo hằng số -> Không thay đổi được giá trị
-    Let khai báo biến số -> Có thể thay đổi được giá trị
+// P2
+/* Different between const and let:
+    Const declare constant that can not be reassigned
+    Let declare variables that can be reassigned
 
-    Đoạn code sau đúng hay sai? Giải thích:
+    When did we use const?
+    We use const by default for any value that is not intended to be reassigned
+
+    Is the following code correct or incorrect? Explain:
     "const x = 10;
     x = 20;"
-    Đoạn code này sai bởi vì const khai báo hằng số
-    nên khi thay đổi lại giá trị thì x = 20 chạy sẽ bị lỗi
+    Those code is wrong cause "const" is declare constant that can not be reassigned.
+    So x can not be reasigned
 */
 
-// Phần 3
+// P3
     /*
-        Xác định kiểu dữ liệu của các giá trị sau (ghi comment):
+        Determine the data type of the following values (write comment):
         100: Number
         True: Boolean
         [1, 2, 3]: Array (Object)
@@ -39,15 +42,15 @@
         null: Null (Object)
         undefined: Undefined (Object)
     */
-    const obj = {
+    const student = {
         name: 'Đỗ Thành',
         age: 26,
         score: [10, 10, 10]
     }
 
-    console.log(obj);
+    console.log(student);
 
-// Phần 4
+// P4
     let typeCasting1 = "1000"
     typeCasting1 = Number(typeCasting1)
     console.log(`${typeCasting1} : ${typeof typeCasting1}`);
@@ -58,7 +61,7 @@
     typeCasting3 = String(typeCasting3)
     console.log(`${typeCasting3} : ${typeof typeCasting3}`);
 
-// Phần 5
+// P5
 /*
     Boolean(0) : false
     Boolean(1) : true
@@ -68,13 +71,15 @@
     Boolean([]) : true
 */
 
-// Phần 6
+// P6
     const numbers = [4, 3, 1, 5, 1];
     console.log(`Phần tử đầu tiên: ${numbers[0]}`);
     console.log(`Phần tử cuối: ${numbers[numbers.length - 1]}`);
 /*
-Vì sao khi gán: thì a và numbers lại liên quan đến cùng một vùng nhớ?
-    numbers là kiểu dữ liệu tham chiếu -> biến chỉ giữ địa chỉ trỏ tới vùng nhớ đó
-    -> gán a = numbers thì a và numbers sẽ trỏ tới cùng một vùng nhớ
+    Why do 'a' and 'numbers' refer to the same memory location when assigned?
+
+    'Numbers' is a reference data type -> the variable only holds the address pointing to that memory location.
+
+    > Assigning 'a' = 'numbers' means 'a' and 'numbers' will point to the same memory location.
 */
 
