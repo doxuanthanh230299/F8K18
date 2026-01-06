@@ -1,20 +1,19 @@
 // Lesson 1
-const classifyScore = (score) => {
+const getStudentLevel = (score) => {
     if (typeof score !== "number" || score < 0 || score > 10) {
-        console.log("Invalid score. Please enter a value between 0 and 10.");
-        return;
+        return "Invalid score. Please enter a value between 0 and 10.";
     }
 
     if (score >= 9) {
-        console.log("Excellent");
+        return "Excellent";
     } else if (score >= 8) {
-        console.log("Very Good");
+        return "Very Good";
     } else if (score >= 6.5) {
-        console.log("Good");
+        return "Good";
     } else if (score >= 5) {
-        console.log("Average");
+        return "Average";
     } else {
-        console.log("Weak");
+        return "Weak";
     }
 };
 
@@ -33,45 +32,43 @@ const getDaysInMonth = (month) => {
         case 8:
         case 10:
         case 12:
-            console.log("This month has 31 days.");
+            return "This month has 31 days."
             break;
 
         case 4:
         case 6:
         case 9:
         case 11:
-            console.log("This month has 30 days.");
+            return "This month has 30 days."
             break;
 
         case 2:
-            console.log("This month has 28 days.");
+            return "This month has 28 days."
             break;
 
         default:
-            console.log("Invalid month.");
+            return "Invalid month."
     }
 };
 
 // // Lesson 3
-const n = 1999
-const evenOddCheck = n % 2 === 0 ? "Even" : "Odd";
-console.log('N is:', evenOddCheck);
+const isEvenOrOdd = n => n % 2 === 0 ? "Even" : "Odd";
 
 
 // // Lesson 4
-const age = 27
-const ticketPrice = age < 13 ? 100000 * 0.5 : 100000;
-console.log('Ticket price: ', ticketPrice);
+const getTicketPrice = age => age < 13 ? 100000 * 0.5 : 100000;
 
 // Lesson 5
 const toFahrenheit = (value) => value * 1.8 + 32;
 
 // Lesson 6
 const getElectricityBill = (value) => {
-    if (typeof value !== "number" || value <= 0) {
+    if (typeof value !== "number" || value < 0) {
         return "Invalid electricity consumption";
     }
-    if (value <= 50) {
+    if (value === 0) {
+        return 0;
+    } else if (value <= 50) {
         return value * 1678;
     } else if (value <= 100) {
         return 50 * 1678 + (value - 50) * 1734;
