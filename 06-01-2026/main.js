@@ -19,19 +19,19 @@ const getTriangle = (a, b, c) => {
         a * a + c * c === b * b ||
         b * b + c * c === a * a;
 
-    if (!isTriangle) return "This isn't triangle";
+    if (!isTriangle) return "Isn't Triangle";
     if (isEqTriangle) {
-        return "This is equilateral triangle";
+        return "Equilateral Triangle";
     }
     if (isIsoTriangle) {
-        if (isRightTriangle) return "Isosceles right triangle";
-        return "This is isosceles triangle";
+        if (isRightTriangle) return "Isosceles Right Triangle";
+        return "Isosceles Triangle";
     }
     if (isRightTriangle) {
-        return "This is right triangle";
+        return "Right Triangle";
     }
 
-    return "This is triangle";
+    return "Triangle";
 };
 
 // Lesson 2
@@ -43,6 +43,6 @@ const isPerfectSquare = (value) => {
         value ** 0.5 % 5 === 0 ||
         value ** 0.5 % 7 === 0
     )
-        return "This is perfect square";
-    return "This isn't perfect square"
+        return true;
+    return false
 };
