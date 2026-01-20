@@ -48,6 +48,7 @@ const updateOrder = (orderId, quantity) => {
     }
     if (!product) {
         console.error("Product not found");
+        return;
     }
     const diff = quantity - order.quantity;
     if (diff > 0) {
