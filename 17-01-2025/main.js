@@ -9,47 +9,51 @@ const products = [
 const orders = [];
 let orderId = 1;
 const createOrder = (productId, orderQuantity) => {
-    if (productId === null || orderQuantity === null) {
+    if (productId === null || orderQuantity === null || orderQuantity <= 0) {
         console.error("Invalid value");
         return;
     }
-    if (!productId) {
+    const product = products.find((product) => product.id === productId);
+    if (!product) {
         console.error("Product not found");
         return;
     }
-
+    if (product.remaining < orderQuantity) {
+        console.error("Out of stock");
+    }
     const order = {
         id: orderId++,
         productId,
         quantity: orderQuantity,
     };
-
     orders.push(order);
-    for (product of products) {
-        if (product.id === productId) {
-            product.remaining = product.remaining - orderQuantity;
-        }
-    }
     return orders;
 };
 
+console.log(createOrder(3, 10));
+console.log(createOrder(3, 10));
+console.log(createOrder(3, 9));
+console.log(createOrder(3, 3));
+console.log(createOrder(1, 3));
+console.log(createOrder(2, 13));
+console.log(createOrder(5, 30));
+console.log(orders);
+console.log(products);
+console.log('==================');
+
 const updateOrder = (orderId, quantity) => {
-    let order;
-    for (orderItem of orders) {
-        if (orderItem.id === orderId) order = orderItem;
-    }
+    const order = orders.find((order) => order.id === orderId);
     if (!order) {
         console.error("Order not found");
         return;
     }
-    let product;
-    for (productItem of products) {
-        if (productItem.id === order.productId) product = productItem;
-    }
+
+    const product = orders.find((order) => order.id === orderId);
     if (!product) {
         console.error("Product not found");
         return;
     }
+
     const diff = quantity - order.quantity;
     if (diff > 0) {
         if (product.remaining < diff) {
@@ -61,37 +65,39 @@ const updateOrder = (orderId, quantity) => {
     if (diff < 0) {
         product.remaining += Math.abs(diff);
     }
+
     order.quantity = quantity;
     return order;
 };
 
+updateOrder(1, 1);
+console.log(products);
+console.log(orders);
+
+updateOrder(20, 19);
+console.log(products);
+console.log(orders);
+console.log('==========');
+
 const deleteOrder = (orderId) => {
-    let index;
-    for (i = 0; i < orders.length; i++) {
-        if (orders[i].id === orderId) {
-            index = i
-        }
-    }
-    
-    if (index === undefined) {
-        console.error("Not found");
+    const orderIndex = orders.findIndex(order => order.productId === orderId);
+
+    if (orderIndex === -1) {
+        console.error("Order not found");
         return;
     }
-    const order = orders[index];
-    let product
-    for (productItem of products) {
-        if (productItem.id === order.productId) product = productItem
+
+    const product = products.find(
+        (product) => product.id === orders[orderIndex].productId
+    );
+    if (!product) {
+        console.error("Product is not exist");
     }
-    if (product) {
-        product.remaining += order.quantity;
-    }
-    orders.splice(index, 1);
-    return orders
+    product.remaining += orders[orderIndex].quantity;
+    orders.splice(orderIndex, 1);
+    return orders;
 };
 
 createOrder(1, 4);
 updateOrder(1, 4);
-deleteOrder(1)
-
-
-
+deleteOrder(1);
