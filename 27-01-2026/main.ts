@@ -1,4 +1,13 @@
-abstract class Employee {
+interface EmployeeI {
+    getId: () => number;
+    getName: () => string;
+    setName: (name: string) => void;
+    getSalary: () => number;
+    setSalary: (salary: number) => void;
+    calculateSalary: () => number;
+}
+
+abstract class Employee implements EmployeeI {
     private id: number;
     name: string;
     salary: number;
@@ -58,12 +67,7 @@ class Developer extends Employee {
 
 class Manager extends Employee {
     private teamSize: number;
-    constructor(
-        id: number,
-        name: string,
-        salary: number,
-        teamSize: number
-    ) {
+    constructor(id: number, name: string, salary: number, teamSize: number) {
         super(id, name, salary);
         this.teamSize = teamSize;
     }
@@ -80,12 +84,9 @@ class Manager extends Employee {
     }
 }
 
-const developer = new Developer(1, 'Do Thanh', 1000, 5);
-const manager = new Manager(2, 'Nguyen Van B', 5000, 4)
+const developer = new Developer(1, "Do Thanh", 1000, 5);
+const manager = new Manager(2, "Nguyen Van B", 5000, 4);
 console.log(developer);
-console.log(developer.calculateSalary()); 
+console.log(developer.calculateSalary());
 console.log(manager);
 console.log(manager.calculateSalary());
-
-
-
