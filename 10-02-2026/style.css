@@ -1,0 +1,89 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html, body {
+    height: 100%;
+  }
+  
+  body {
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  img, picture, video, canvas, svg {
+    display: block;
+    max-width: 100%;
+  }
+  
+  input, button, textarea, select {
+    font: inherit;
+  }
+  
+  ul, ol {
+    list-style: none;
+  }
+
+body {
+    font-family: Arial;
+    /* padding: 20px; */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+section {
+    border: 1px solid #ccc;
+    padding: 16px;
+    margin: 16px;
+    border-radius: 8px;
+}
+
+h2 {
+    margin-bottom: 12px;
+}
+
+button {
+    cursor: pointer;
+    height: 32px;
+    border-radius: 8px;
+    outline: none;
+    padding: 2px 6px;
+    border: 1px solid #000;
+}
+
+input {
+    height: 32px;
+    border-radius: 8px;
+    border: 1px solid #a39e9e;
+    padding: 12px;
+}
+
+.completed {
+    text-decoration: line-through;
+}
+
+.selected {
+    background: lightblue;
+}
+
+.done-btn {
+    background: yellow;
+}
+
+.done-btn.active {
+    background: green;
+    color: white;
+}
+
+.delete-btn {
+    background: red;
+    color: white;
+}
+
+.label-9 {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
