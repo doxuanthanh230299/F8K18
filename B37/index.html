@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bài tập Storage</title>
+    <style>
+      body {
+        max-width: 900px;
+        margin: 24px auto;
+        padding: 0 16px;
+      }
+      section {
+        border: 1px solid #ddd;
+        padding: 12px;
+        margin-bottom: 16px;
+        border-radius: 6px;
+      }
+      h2 {
+        margin-top: 0;
+      }
+      .products {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .product {
+        border: 1px solid #ccc;
+        padding: 8px;
+        border-radius: 6px;
+        width: 180px;
+      }
+      button {
+        cursor: pointer;
+      }
+      .cart-badge {
+        background: #0078d4;
+        color: white;
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Bài tập LocalStorage & SessionStorage</h1>
+
+    <section id="exercise1">
+      <h2>Bài 1</h2>
+      <input id="nameInput" type="text" placeholder="Nhập tên của bạn" />
+      <button id="saveNameBtn">Lưu</button>
+      <button id="readNameBtn">Đọc</button>
+      <div style="margin-top: 8px">
+        Tên hiện tại: <strong id="nameDisplay">(chưa có)</strong>
+      </div>
+    </section>
+
+    <section id="exercise2">
+      <h2>Bài 2</h2>
+      <h3 id="visitHeading">Bạn đã truy cập trang này 0 lần.</h3>
+      <button id="resetVisitsBtn">Reset</button>
+    </section>
+
+    <section id="exercise3">
+      <h2>Bài 3</h2>
+      <div
+        style="
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          margin-bottom: 8px;
+        "
+      >
+        <div>
+          Số sản phẩm trong giỏ:
+          <span id="cartCount" class="cart-badge">0</span>
+        </div>
+        <button id="clearCartBtn">Xóa giỏ hàng</button>
+      </div>
+
+      <div class="products" id="productsContainer"></div>
+
+      <h4>Giỏ hàng</h4>
+      <ul id="cartItems"></ul>
+    </section>
+
+    <script>
+      // Bài 1:
+      const nameInput = document.getElementById("nameInput");
+      const saveNameBtn = document.getElementById("saveNameBtn");
+      const readNameBtn = document.getElementById("readNameBtn");
+      const nameDisplay = document.getElementById("nameDisplay");
+      const NAME_KEY = "username";
+
+      function saveName() {
+        const v = nameInput.value.trim();
+        if (!v) return alert("Vui lòng nhập tên");
+        localStorage.setItem(NAME_KEY, v);
+        nameDisplay.textContent = v;
+      }
+
+      function readName() {
+        const v = localStorage.getItem(NAME_KEY);
+        if (v) {
+          nameDisplay.textContent = v;
+          nameInput.value = v;
+        } else {
+          nameDisplay.textContent = "(chưa có)";
+          alert("Chưa lưu tên nào trong localStorage");
+        }
+      }
+
+      saveNameBtn.addEventListener("click", saveName);
+      readNameBtn.addEventListener("click", readName);
+
+      // Khi tải trang, nếu có tên thì hiển thị
+      document.addEventListener("DOMContentLoaded", () => {
+        const stored = localStorage.getItem(NAME_KEY);
+        if (stored) {
+          nameDisplay.textContent = stored;
+          nameInput.value = stored;
+        }
+      });
+
+      //  Bài 2:
+      const visitHeading = document.getElementById("visitHeading");
+      const resetVisitsBtn = document.getElementById("resetVisitsBtn");
+      const VISIT_KEY = "visitCount";
+
+      function updateVisitCountOnLoad() {
+        let count = parseInt(localStorage.getItem(VISIT_KEY) || "0", 10);
+        count = isNaN(count) ? 1 : count + 1; // new visit
+        localStorage.setItem(VISIT_KEY, String(count));
+        renderVisitCount();
+      }
+
+      function renderVisitCount() {
+        const c = parseInt(localStorage.getItem(VISIT_KEY) || "0", 10);
+        visitHeading.textContent = `Bạn đã truy cập trang này ${c} lần.`;
+      }
+
+      function resetVisitCount() {
+        localStorage.setItem(VISIT_KEY, "0");
+        renderVisitCount();
+      }
+
+      resetVisitsBtn.addEventListener("click", resetVisitCount);
+
+      // Bài 3:
+      const products = [
+        { id: "p1", name: "Sản phẩm A", price: 120000 },
+        { id: "p2", name: "Sản phẩm B", price: 80000 },
+        { id: "p3", name: "Sản phẩm C", price: 50000 },
+      ];
+
+      const PRODUCTS_CONTAINER = document.getElementById("productsContainer");
+      const CART_ITEMS = document.getElementById("cartItems");
+      const CART_COUNT = document.getElementById("cartCount");
+      const CLEAR_CART_BTN = document.getElementById("clearCartBtn");
+      const CART_KEY = "cart"; // stored in sessionStorage
+
+      function renderProducts() {
+        PRODUCTS_CONTAINER.innerHTML = "";
+        products.forEach((p) => {
+          const el = document.createElement("div");
+          el.className = "product";
+          el.innerHTML = `
+                    <div><strong>${p.name}</strong></div>
+                    <div>Giá: ${p.price.toLocaleString()} VND</div>
+                    <div style="margin-top:8px"><button data-id="${p.id}">Thêm vào giỏ</button></div>
+                `;
+          const btn = el.querySelector("button");
+          btn.addEventListener("click", () => addToCart(p.id));
+          PRODUCTS_CONTAINER.appendChild(el);
+        });
+      }
+
+      // cart stored as object { productId: quantity }
+      function getCart() {
+        const raw = sessionStorage.getItem(CART_KEY);
+        return raw ? JSON.parse(raw) : {};
+      }
+
+      function saveCart(cart) {
+        sessionStorage.setItem(CART_KEY, JSON.stringify(cart));
+      }
+
+      function addToCart(productId) {
+        const cart = getCart();
+        cart[productId] = (cart[productId] || 0) + 1;
+        saveCart(cart);
+        renderCart();
+      }
+
+      function renderCart() {
+        const cart = getCart();
+        CART_ITEMS.innerHTML = "";
+        let totalCount = 0;
+        for (const id in cart) {
+          const qty = cart[id];
+          totalCount += qty;
+          const prod = products.find((p) => p.id === id) || { name: id };
+          const li = document.createElement("li");
+          li.textContent = `${prod.name} — Số lượng: ${qty}`;
+          CART_ITEMS.appendChild(li);
+        }
+        CART_COUNT.textContent = totalCount;
+      }
+
+      function clearCart() {
+        sessionStorage.removeItem(CART_KEY);
+        renderCart();
+      }
+
+      CLEAR_CART_BTN.addEventListener("click", () => {
+        if (!confirm("Xóa toàn bộ giỏ hàng?")) return;
+        clearCart();
+      });
+
+      // init on load
+      document.addEventListener("DOMContentLoaded", () => {
+        renderProducts();
+        renderCart();
+        // Visit count must increment once on load
+        updateVisitCountOnLoad();
+      });
+    </script>
+  </body>
+</html>
